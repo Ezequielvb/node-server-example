@@ -7,7 +7,7 @@ export async function createPlan(
     nombre: string, 
     activities: ActivitiesData = []
 ) {
-    return prisma.plan.create({
+    return prisma.planes.create({
         data: {
             nombre,
             activities: activities as any, 
@@ -19,7 +19,7 @@ export async function createPlan(
 
 
 export async function findPlanById(id: number) {
-    return prisma.plan.findUnique({
+    return prisma.planes.findUnique({
         where: { id: BigInt(id) }, 
         select: { id: true, nombre: true, createdAt: true, activities: true, userId: true, user: { select: { id: true, name: true, email: true } } }
     });
@@ -27,7 +27,7 @@ export async function findPlanById(id: number) {
 
 
 export async function listPlansByUserId(userId: number) {
-    return prisma.plan.findMany({
+    return prisma.planes.findMany({
         where: { userId },
         select: { id: true, nombre: true, createdAt: true, activities: true },
         orderBy: { createdAt: 'desc' }
@@ -44,7 +44,7 @@ export async function updatePlan(
         ...(data.activities && { activities: data.activities as any })
     };
 
-    return prisma.plan.update({
+    return prisma.planes.update({
         where: { id: BigInt(id) },
         data: updateData,
         select: { id: true, nombre: true, createdAt: true, activities: true, userId: true }
@@ -53,5 +53,5 @@ export async function updatePlan(
 
 
 export async function deletePlan(id: number) {
-    return prisma.plan.delete({ where: { id: BigInt(id) } });
+    return prisma.planes.delete({ where: { id: BigInt(id) } });
 }

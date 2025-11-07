@@ -53,5 +53,3 @@ export async function handleGetPlanById(req: Request, res: Response, next: NextF
         next(error);
     }
 }
-
-// Implementaciones similares para PUT/PATCH y DELETE...
