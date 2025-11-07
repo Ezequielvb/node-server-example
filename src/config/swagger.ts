@@ -32,6 +32,32 @@ const options: swaggerJsdoc.Options = {
         },
       },
       schemas: {
+        Planes: {
+          type: 'object',
+          properties: {
+            id: {
+              type: 'integer',
+              description: 'ID del plan',
+            },
+            name: {
+              type: 'string',
+              description: 'Nombre del plan',
+            },
+            user_id: {
+              type: 'integer',
+              description: 'Id del usuario creador del plan',
+            },
+            createdAt: {
+              type: 'string',
+              format: 'date-time',
+              description: 'Fecha de creación',
+            },
+            activities:{
+              type : 'json',
+              description : 'Lista de ids de actividades pertenecientes al plan' 
+            }
+          },
+        },
         User: {
           type: 'object',
           properties: {

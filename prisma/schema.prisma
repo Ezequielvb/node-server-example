@@ -19,4 +19,17 @@ model User {
   name         String
   passwordHash String
   createdAt    DateTime @default(now())
+  plans           Plan[]
+
+  @@map("User")
+}
+
+model Plan {
+  id              BigInt    @id @default(autoincrement()) @map("id")
+  nombre          String    @map("nombre")
+  createdAt       DateTime  @default(now()) @map("createdAt")
+  activities      Json?     @map("activities") 
+  userId          Int       @map("user_id") 
+  user            User      @relation(fields: [userId], references: [id])
+  @@map("planes") 
 }

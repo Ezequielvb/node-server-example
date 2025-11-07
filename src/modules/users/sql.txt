@@ -1,0 +1,19 @@
+
+CREATE TABLE planes (
+    id BIGSERIAL PRIMARY KEY, 
+
+    nombre VARCHAR(255) NOT NULL,
+    
+    createdAt TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+
+    activities JSONB, 
+
+
+  
+    user_id INTEGER NOT NULL, 
+    
+    CONSTRAINT fk_user
+        FOREIGN KEY (user_id) 
+        REFERENCES "User" (id)
+        ON DELETE CASCADE
+);
