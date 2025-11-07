@@ -9,7 +9,7 @@ import { env } from './config/env.js';
 import { swaggerSpec } from './config/swagger.js';
 import authRoutes from './modules/auth/auth.routes.js';
 import usersRoutes from './modules/users/users.routes.js';
-
+import profileRouter from './modules/profile/profile.routes.js'
 const app = express();
 
 app.use(helmet({
@@ -36,6 +36,8 @@ if (env.NODE_ENV !== 'test') {
 app.use('/api/users', usersRoutes);
 
 app.use(errorHandler);
+
+
 
 export default app;
 

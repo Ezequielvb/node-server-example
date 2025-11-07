@@ -137,6 +137,29 @@ const options: swaggerJsdoc.Options = {
           },
         },
       },
+      Profile: {
+        type: 'object',
+        properties: {
+          id: {
+            type: 'integer',
+            description: 'ID del usuario',
+          },
+          email: {
+            type: 'string',
+            format: 'email',
+            description: 'Email del usuario',
+          },
+          name: {
+            type: 'string',
+            description: 'Nombre del usuario',
+          },
+          createdAt: {
+            type: 'string',
+            format: 'date-time',
+            description: 'Fecha de creación',
+          },
+        },
+      },
     },
     tags: [
       {
@@ -146,6 +169,10 @@ const options: swaggerJsdoc.Options = {
       {
         name: 'Users',
         description: 'Gestión de usuarios',
+      },
+      {
+        name: 'Profile',
+        description: 'Gestión del perfil del usuario autenticado',
       },
     ],
   },

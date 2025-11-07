@@ -1,0 +1,19 @@
+meta {
+  name: obtener usuario por ID
+  type: http
+  seq: 5
+}
+
+get {
+  url: http://localhost:3000/api/users/1
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImVtYWlsIjoiZXplQGdtYWlsLmNvbSIsImlhdCI6MTc2MjUxNTE3OCwiZXhwIjoxNzYzMTE5OTc4fQ.epcBfQv755yEo4YXBk5GjZi1w_uv0rIQrut8LYPHL_c
+}
+
+settings {
+  encodeUrl: true
+}
