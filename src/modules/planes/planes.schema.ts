@@ -20,6 +20,10 @@ export const planIdParamSchema = z.object({
     planId: z.string().regex(/^\d+$/, 'ID del plan inválido. Debe ser un número entero.')
 });
 
+export const userIdParamSchema = z.object({
+    userId: z.string().regex(/^\d+$/, 'ID del usuario inválido. Debe ser un número entero.')
+});
+
 
 
 export type CreatePlanInput = z.infer<typeof createPlanSchema>;

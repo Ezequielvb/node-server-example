@@ -2,12 +2,23 @@ import { prisma } from '../../config/db.js';
 
 type ActivitiesData = number[]; 
 
+function normalizePlan(plan: any) {
+    if (!plan) return plan;
+    const normalized: any = { ...plan };
+    if (typeof normalized.id === 'bigint') normalized.id = Number(normalized.id);
+    if (typeof normalized.userId === 'bigint') normalized.userId = Number(normalized.userId);
+    if (normalized.user && typeof normalized.user.id === 'bigint') {
+        normalized.user = { ...normalized.user, id: Number(normalized.user.id) };
+    }
+    return normalized;
+}
+
 export async function createPlan(
     userId: number, 
     nombre: string, 
     activities: ActivitiesData = []
 ) {
-    return prisma.planes.create({
+    const plan = await prisma.plan.create({
         data: {
             nombre,
             activities: activities as any, 
@@ -15,23 +26,26 @@ export async function createPlan(
         },
         select: { id: true, nombre: true, createdAt: true, activities: true, userId: true }
     });
+    return normalizePlan(plan);
 }
 
 
 export async function findPlanById(id: number) {
-    return prisma.planes.findUnique({
+    const plan = await prisma.plan.findUnique({
         where: { id: BigInt(id) }, 
         select: { id: true, nombre: true, createdAt: true, activities: true, userId: true, user: { select: { id: true, name: true, email: true } } }
     });
+    return normalizePlan(plan);
 }
 
 
 export async function listPlansByUserId(userId: number) {
-    return prisma.planes.findMany({
+    const plans = await prisma.plan.findMany({
         where: { userId },
-        select: { id: true, nombre: true, createdAt: true, activities: true },
+        select: { id: true, nombre: true, createdAt: true, activities: true, userId: true },
         orderBy: { createdAt: 'desc' }
     });
+    return plans.map(normalizePlan);
 }
 
 
@@ -44,14 +58,15 @@ export async function updatePlan(
         ...(data.activities && { activities: data.activities as any })
     };
 
-    return prisma.planes.update({
+    return prisma.plan.update({
         where: { id: BigInt(id) },
         data: updateData,
         select: { id: true, nombre: true, createdAt: true, activities: true, userId: true }
-    });
+    }).then(normalizePlan);
 }
 
 
 export async function deletePlan(id: number) {
-    return prisma.planes.delete({ where: { id: BigInt(id) } });
+    const plan = await prisma.plan.delete({ where: { id: BigInt(id) }, select: { id: true, nombre: true, createdAt: true, activities: true, userId: true } });
+    return normalizePlan(plan);
 }
