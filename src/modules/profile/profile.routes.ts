@@ -16,7 +16,57 @@ const router = Router();
  *       - bearerAuth: []
  *     responses:
  *       200:
- *         description: Perfil del usuario
+ *         description: Perfil obtenido correctamente
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Profile'
+ *       401:
+ *         description: No autorizado
+ *
+ *   patch:
+ *     summary: Actualiza el perfil del usuario autenticado
+ *     tags: [Profile]
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/UpdateProfileData'
+ *     responses:
+ *       200:
+ *         description: Perfil actualizado correctamente
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Profile'
+ *       400:
+ *         description: Datos inválidos
+ *       401:
+ *         description: No autorizado
+ */
+
+/**
+ * @swagger
+ * /api/profile/password:
+ *   patch:
+ *     summary: Cambia la contraseña del usuario autenticado
+ *     tags: [Profile]
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/ChangeProfilePasswordInput'
+ *     responses:
+ *       200:
+ *         description: Contraseña actualizada correctamente
+ *       400:
+ *         description: Error en los datos enviados
  *       401:
  *         description: No autorizado
  */

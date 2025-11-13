@@ -12,7 +12,8 @@ const options: swaggerJsdoc.Options = {
     info: {
       title: 'API Express + PostgreSQL',
       version: '1.0.0',
-      description: 'API REST con autenticación JWT, validación Zod, rate limiting y testing completo',
+      description:
+        'API REST con autenticación JWT, validación Zod, rate limiting y testing completo',
       contact: {
         name: 'API Support',
       },
@@ -32,22 +33,13 @@ const options: swaggerJsdoc.Options = {
         },
       },
       schemas: {
+        // ---------- USER ----------
         User: {
           type: 'object',
           properties: {
-            id: {
-              type: 'integer',
-              description: 'ID del usuario',
-            },
-            email: {
-              type: 'string',
-              format: 'email',
-              description: 'Email del usuario',
-            },
-            name: {
-              type: 'string',
-              description: 'Nombre del usuario',
-            },
+            id: { type: 'integer', description: 'ID del usuario' },
+            email: { type: 'string', format: 'email', description: 'Email del usuario' },
+            name: { type: 'string', description: 'Nombre del usuario' },
             createdAt: {
               type: 'string',
               format: 'date-time',
@@ -59,16 +51,8 @@ const options: swaggerJsdoc.Options = {
           type: 'object',
           required: ['email', 'name', 'password'],
           properties: {
-            email: {
-              type: 'string',
-              format: 'email',
-              description: 'Email del usuario',
-            },
-            name: {
-              type: 'string',
-              minLength: 2,
-              description: 'Nombre del usuario',
-            },
+            email: { type: 'string', format: 'email', description: 'Email del usuario' },
+            name: { type: 'string', minLength: 2, description: 'Nombre del usuario' },
             password: {
               type: 'string',
               minLength: 8,
@@ -80,104 +64,92 @@ const options: swaggerJsdoc.Options = {
           type: 'object',
           required: ['email', 'password'],
           properties: {
-            email: {
-              type: 'string',
-              format: 'email',
-            },
-            password: {
-              type: 'string',
-              minLength: 8,
-            },
+            email: { type: 'string', format: 'email' },
+            password: { type: 'string', minLength: 8 },
           },
         },
         AuthResponse: {
           type: 'object',
           properties: {
-            user: {
-              $ref: '#/components/schemas/User',
-            },
-            token: {
-              type: 'string',
-              description: 'JWT token',
-            },
+            user: { $ref: '#/components/schemas/User' },
+            token: { type: 'string', description: 'JWT token' },
           },
         },
         UpdateProfileInput: {
           type: 'object',
           properties: {
-            email: {
-              type: 'string',
-              format: 'email',
-            },
-            name: {
-              type: 'string',
-              minLength: 2,
-            },
+            email: { type: 'string', format: 'email' },
+            name: { type: 'string', minLength: 2 },
           },
         },
         ChangePasswordInput: {
           type: 'object',
           required: ['currentPassword', 'newPassword'],
           properties: {
-            currentPassword: {
-              type: 'string',
-            },
-            newPassword: {
-              type: 'string',
-              minLength: 8,
-            },
+            currentPassword: { type: 'string' },
+            newPassword: { type: 'string', minLength: 8 },
           },
         },
         Error: {
           type: 'object',
           properties: {
-            message: {
+            message: { type: 'string' },
+          },
+        },
+
+        // ---------- PROFILE ----------
+        Profile: {
+          type: 'object',
+          properties: {
+            id: { type: 'integer', description: 'ID del perfil' },
+            username: { type: 'string', description: 'Nombre de usuario visible' },
+            bio: { type: 'string', nullable: true, description: 'Biografía del usuario' },
+            avatarUrl: {
               type: 'string',
+              nullable: true,
+              description: 'URL del avatar del usuario',
+            },
+            updatedAt: {
+              type: 'string',
+              format: 'date-time',
+              description: 'Última actualización del perfil',
+            },
+            userId: { type: 'integer', description: 'ID del usuario asociado' },
+          },
+        },
+        UpdateProfileData: {
+          type: 'object',
+          properties: {
+            username: { type: 'string', minLength: 2, description: 'Nuevo nombre de usuario' },
+            bio: { type: 'string', nullable: true, description: 'Biografía del usuario' },
+            avatarUrl: {
+              type: 'string',
+              nullable: true,
+              description: 'Nueva URL del avatar',
             },
           },
         },
-      },
-      Profile: {
-        type: 'object',
-        properties: {
-          id: {
-            type: 'integer',
-            description: 'ID del usuario',
-          },
-          email: {
-            type: 'string',
-            format: 'email',
-            description: 'Email del usuario',
-          },
-          name: {
-            type: 'string',
-            description: 'Nombre del usuario',
-          },
-          createdAt: {
-            type: 'string',
-            format: 'date-time',
-            description: 'Fecha de creación',
+        ChangeProfilePasswordInput: {
+          type: 'object',
+          required: ['currentPassword', 'newPassword'],
+          properties: {
+            currentPassword: { type: 'string', description: 'Contraseña actual' },
+            newPassword: {
+              type: 'string',
+              minLength: 8,
+              description: 'Nueva contraseña',
+            },
           },
         },
       },
     },
     tags: [
-      {
-        name: 'Auth',
-        description: 'Endpoints de autenticación',
-      },
-      {
-        name: 'Users',
-        description: 'Gestión de usuarios',
-      },
-      {
-        name: 'Profile',
-        description: 'Gestión del perfil del usuario autenticado',
-      },
+      { name: 'Auth', description: 'Endpoints de autenticación' },
+      { name: 'Users', description: 'Gestión de usuarios' },
+      { name: 'Profile', description: 'Gestión del perfil del usuario autenticado' },
     ],
   },
   apis: [join(__dirname, '../modules/**/*.routes.js')],
 };
 
 export const swaggerSpec = swaggerJsdoc(options);
-
