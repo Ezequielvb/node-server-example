@@ -1,11 +1,9 @@
 import { Router } from 'express';
 import { auth } from '../../middleware/auth.js';
 import { validate } from '../../middleware/validate.js';
-import { updateProfileSchema, changePasswordSchema } from './profile.schema.js';
-import { getProfileCtrl, updateProfileCtrl, changePasswordCtrl } from './profile.controller.js';
-
+import { updateProfileSchema } from './profile.schema.js';
+import { getProfileCtrl, updateProfileCtrl } from './profile.controller.js';
 const router = Router();
-
 /**
  * @swagger
  * /api/profile:
@@ -21,7 +19,6 @@ const router = Router();
  *         description: No autorizado
  */
 router.get('/', auth, getProfileCtrl);
-
 /**
  * @swagger
  * /api/profile:
@@ -38,34 +35,10 @@ router.get('/', auth, getProfileCtrl);
  *             $ref: '#/components/schemas/UpdateProfileInput'
  *     responses:
  *       200:
- *         description: Perfil actualizado correctamente
- *       400:
- *         description: Datos inválidos
+ *         description: Perfil actualizado
  *       409:
  *         description: Email ya en uso
  */
 router.patch('/', auth, validate(updateProfileSchema), updateProfileCtrl);
-
-/**
- * @swagger
- * /api/profile/password:
- *   patch:
- *     summary: Cambia la contraseña del usuario autenticado
- *     tags: [Profile]
- *     security:
- *       - bearerAuth: []
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             $ref: '#/components/schemas/ChangePasswordInput'
- *     responses:
- *       200:
- *         description: Contraseña cambiada correctamente
- *       400:
- *         description: Contraseña actual incorrecta
- */
-router.patch('/password', auth, validate(changePasswordSchema), changePasswordCtrl);
-
 export default router;
+//# sourceMappingURL=profile.routes.js.map
