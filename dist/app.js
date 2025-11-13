@@ -28,6 +28,7 @@ if (env.NODE_ENV !== 'test') {
 else {
     app.use('/api/auth', authRoutes);
 }
+app.use('/api/profile', profileRouter);
 app.use('/api/users', usersRoutes);
 app.use(errorHandler);
 export default app;

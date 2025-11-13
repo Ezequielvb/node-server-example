@@ -1,0 +1,27 @@
+meta {
+  name: a
+  type: http
+  seq: 2
+}
+
+get {
+  url: http://localhost:3000/api/profile
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMsImVtYWlsIjoidXNlcjFAZXhhbXBsZS5jb20iLCJpYXQiOjE3NjMwMzk1ODcsImV4cCI6MTc2MzY0NDM4N30.SuC6tcgYQTQVp_DKyfhyDkHSLozLj9quBcJWWEcZMYw
+}
+
+body:json {
+  {
+    "username": "asadasd",
+    "bio": "ajdaskdhkaaasudiashud",
+    "avatarUrl": "a"
+  }
+}
+
+settings {
+  encodeUrl: true
+}

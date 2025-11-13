@@ -1,5 +1,6 @@
 import type { Request, Response } from 'express';
-import { getProfile, updateProfile, changePassword } from './profile.service.js';
+import { getProfile, updateProfile, changePassword, createProfile } from './profile.service.js';
+import { createProfileSchema } from './profile.schema.js';
 
 export async function getProfileCtrl(req: Request, res: Response) {
   try {
@@ -18,6 +19,44 @@ export async function getProfileCtrl(req: Request, res: Response) {
   }
 }
 
+export async function createProfileCtrl(req: Request, res: Response) {
+  try {
+    if (!req.user) {
+      return res.status(401).json({ message: 'No autorizado' });
+    }
+
+    const data = createProfileSchema.parse(req.body);
+    
+    // Construir el objeto solo con propiedades definidas
+    const profileData: {
+      username: string;
+      bio?: string;
+      avatarUrl?: string;
+      userId: number;
+    } = {
+      username: data.username,
+      userId: req.user.sub
+    };
+    
+    if (data.bio !== undefined) {
+      profileData.bio = data.bio;
+    }
+    
+    if (data.avatarUrl !== undefined) {
+      profileData.avatarUrl = data.avatarUrl;
+    }
+    
+    const profile = await createProfile(profileData);
+    
+    res.status(201).json(profile);
+  } catch (error: any) {
+    if (error.code === 'P2002') {
+      return res.status(409).json({ message: 'El perfil ya existe para este usuario' });
+    }
+    res.status(400).json({ message: error.message });
+  }
+}
+
 export async function updateProfileCtrl(req: Request, res: Response) {
   try {
     if (!req.user) {
@@ -28,7 +67,7 @@ export async function updateProfileCtrl(req: Request, res: Response) {
     res.json(updatedProfile);
   } catch (error: any) {
     if (error.code === 'P2002') {
-      return res.status(409).json({ message: 'El email ya está en uso' });
+      return res.status(409).json({ message: 'El email o username ya está en uso' });
     }
     res.status(500).json({ message: error.message });
   }

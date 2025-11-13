@@ -33,6 +33,7 @@ if (env.NODE_ENV !== 'test') {
   app.use('/api/auth', authRoutes);
 }
 
+app.use('/api/profile', profileRouter);
 app.use('/api/users', usersRoutes);
 
 app.use(errorHandler);

@@ -5,7 +5,7 @@ import { env } from '../config/env.js';
 declare global {
   namespace Express {
     interface Request {
-      user?: { sub: number; email: string };
+      user: { sub: number; email: string };
     }
   }
 }

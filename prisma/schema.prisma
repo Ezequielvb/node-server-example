@@ -21,8 +21,8 @@ model User {
 model Profile {
   id        Int      @id @default(autoincrement())
   username  String
-  bio       String?
-  avatarUrl String?
+  bio       String
+  avatarUrl String
   updatedAt DateTime @updatedAt
 
   // Este lado define la foreign key hacia User

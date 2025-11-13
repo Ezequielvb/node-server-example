@@ -75,21 +75,6 @@ const options: swaggerJsdoc.Options = {
             token: { type: 'string', description: 'JWT token' },
           },
         },
-        UpdateProfileInput: {
-          type: 'object',
-          properties: {
-            email: { type: 'string', format: 'email' },
-            name: { type: 'string', minLength: 2 },
-          },
-        },
-        ChangePasswordInput: {
-          type: 'object',
-          required: ['currentPassword', 'newPassword'],
-          properties: {
-            currentPassword: { type: 'string' },
-            newPassword: { type: 'string', minLength: 8 },
-          },
-        },
         Error: {
           type: 'object',
           properties: {
@@ -103,10 +88,9 @@ const options: swaggerJsdoc.Options = {
           properties: {
             id: { type: 'integer', description: 'ID del perfil' },
             username: { type: 'string', description: 'Nombre de usuario visible' },
-            bio: { type: 'string', nullable: true, description: 'Biografía del usuario' },
+            bio: { type: 'string', description: 'Biografía del usuario' },
             avatarUrl: {
               type: 'string',
-              nullable: true,
               description: 'URL del avatar del usuario',
             },
             updatedAt: {
@@ -117,19 +101,79 @@ const options: swaggerJsdoc.Options = {
             userId: { type: 'integer', description: 'ID del usuario asociado' },
           },
         },
-        UpdateProfileData: {
+        CreateProfileInput: {
           type: 'object',
+          required: ['username'],
           properties: {
-            username: { type: 'string', minLength: 2, description: 'Nuevo nombre de usuario' },
-            bio: { type: 'string', nullable: true, description: 'Biografía del usuario' },
+            username: { 
+              type: 'string', 
+              minLength: 3, 
+              description: 'Nombre de usuario único' 
+            },
+            bio: { 
+              type: 'string', 
+              minLength: 5,
+              description: 'Biografía del usuario (opcional)' 
+            },
             avatarUrl: {
               type: 'string',
-              nullable: true,
-              description: 'Nueva URL del avatar',
+              format: 'uri',
+              description: 'URL del avatar del usuario (opcional)',
             },
           },
         },
-        ChangeProfilePasswordInput: {
+        UpdateProfileInput: {
+          type: 'object',
+          properties: {
+            // Campos de User
+            name: { 
+              type: 'string', 
+              minLength: 2, 
+              description: 'Nombre del usuario' 
+            },
+            email: { 
+              type: 'string', 
+              format: 'email',
+              description: 'Email del usuario' 
+            },
+            // Campos de Profile
+            username: { 
+              type: 'string', 
+              minLength: 3, 
+              description: 'Nombre de usuario visible' 
+            },
+            bio: { 
+              type: 'string', 
+              description: 'Biografía del usuario' 
+            },
+            avatarUrl: {
+              type: 'string',
+              format: 'uri',
+              description: 'URL del avatar del usuario',
+            },
+          },
+        },
+        UserWithProfile: {
+          type: 'object',
+          properties: {
+            id: { type: 'integer', description: 'ID del usuario' },
+            email: { type: 'string', format: 'email', description: 'Email del usuario' },
+            name: { type: 'string', description: 'Nombre del usuario' },
+            createdAt: {
+              type: 'string',
+              format: 'date-time',
+              description: 'Fecha de creación',
+            },
+            profile: {
+              oneOf: [
+                { $ref: '#/components/schemas/Profile' },
+                { type: 'null' }
+              ],
+              description: 'Perfil del usuario (puede ser null si no existe)'
+            },
+          },
+        },
+        ChangePasswordInput: {
           type: 'object',
           required: ['currentPassword', 'newPassword'],
           properties: {
@@ -137,7 +181,7 @@ const options: swaggerJsdoc.Options = {
             newPassword: {
               type: 'string',
               minLength: 8,
-              description: 'Nueva contraseña',
+              description: 'Nueva contraseña (mínimo 8 caracteres)',
             },
           },
         },
